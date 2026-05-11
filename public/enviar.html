@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enviar mensaje</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="body-form">
+  <div class="card">
+    <h1>Dejá tu mensaje 💌</h1>
+    <p>Subí una frase o foto para mostrar en la pantalla.</p>
+
+    <form id="formMensaje">
+      <input type="text" name="nombre" placeholder="Tu nombre" maxlength="40">
+
+      <textarea name="mensaje" placeholder="Escribí tu mensaje..." maxlength="300"></textarea>
+
+      <label class="file-label">
+        Subir foto
+        <input type="file" name="foto" accept="image/*">
+      </label>
+
+      <button type="submit">Enviar</button>
+    </form>
+
+    <p id="respuesta"></p>
+  </div>
+
+  <script src="enviar.js"></script>
+</body>
+</html>

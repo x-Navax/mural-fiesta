@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moderación</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="body-admin">
+
+  <div class="admin-container">
+
+    <h1>Panel de moderación</h1>
+
+    <div class="login-admin">
+      <input
+        type="password"
+        id="pin"
+        placeholder="PIN admin"
+      >
+
+      <button onclick="guardarPin()">
+        Entrar
+      </button>
+    </div>
+
+    <div id="pendientes" class="pendientes"></div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="admin.js"></script>
+
+</body>
+</html>

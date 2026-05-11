@@ -1,0 +1,219 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.body-form{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:
+  radial-gradient(circle at top,#ff7ad9,#1b0023 70%);
+  padding:20px;
+  color:white;
+}
+
+.card{
+  width:100%;
+  max-width:450px;
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.2);
+  backdrop-filter:blur(15px);
+  border-radius:30px;
+  padding:30px;
+  box-shadow:0 20px 40px rgba(0,0,0,.3);
+}
+
+.card h1{
+  margin-bottom:10px;
+  font-size:38px;
+}
+
+.card p{
+  margin-bottom:20px;
+  opacity:.8;
+}
+
+input,
+textarea,
+button{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:16px;
+  margin-top:12px;
+  font-size:16px;
+}
+
+textarea{
+  min-height:140px;
+  resize:none;
+}
+
+button{
+  background:linear-gradient(135deg,#ffd36a,#ff7ad9);
+  color:#111;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.3s;
+}
+
+button:hover{
+  transform:scale(1.02);
+}
+
+.file-label{
+  display:block;
+  background:rgba(255,255,255,0.12);
+  padding:16px;
+  border-radius:18px;
+  margin-top:12px;
+  cursor:pointer;
+  text-align:center;
+}
+
+.file-label input{
+  display:none;
+}
+
+#respuesta{
+  text-align:center;
+  margin-top:20px;
+  font-weight:bold;
+}
+
+
+.body-pantalla{
+  min-height:100vh;
+  background:
+  radial-gradient(circle at top left,#4d003e,#070009 70%);
+  color:white;
+  padding:30px;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+.header h1{
+  font-size:60px;
+  margin-bottom:10px;
+
+  background:linear-gradient(135deg,#fff,#ffd36a,#ff7ad9);
+  -webkit-background-clip:text;
+  color:transparent;
+}
+
+.header p{
+  font-size:24px;
+  opacity:.8;
+}
+
+.mural{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:25px;
+}
+
+.post{
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:28px;
+  padding:20px;
+  backdrop-filter:blur(15px);
+}
+
+.post img{
+  width:100%;
+  border-radius:20px;
+  margin-bottom:15px;
+}
+
+.mensaje{
+  font-size:28px;
+  line-height:1.4;
+  margin-bottom:15px;
+}
+
+.post h3{
+  color:#ffd36a;
+}
+
+.body-admin{
+  min-height:100vh;
+  background:#111;
+  color:white;
+  padding:30px;
+}
+
+.admin-container{
+  max-width:900px;
+  margin:auto;
+}
+
+.admin-container h1{
+  margin-bottom:20px;
+}
+
+.login-admin{
+  display:flex;
+  gap:10px;
+  margin-bottom:30px;
+}
+
+.login-admin input{
+  margin:0;
+}
+
+.login-admin button{
+  max-width:160px;
+  margin:0;
+}
+
+.pendientes{
+  display:grid;
+  gap:20px;
+}
+
+.admin-post{
+  background:#1f1f1f;
+  border:1px solid #333;
+  border-radius:25px;
+  padding:20px;
+}
+
+.admin-post img{
+  width:100%;
+  max-width:250px;
+  border-radius:20px;
+  margin-bottom:15px;
+}
+
+.admin-post h3{
+  margin-bottom:10px;
+}
+
+.admin-post p{
+  margin-bottom:15px;
+}
+
+.acciones{
+  display:flex;
+  gap:10px;
+}
+
+.aprobar{
+  background:#57e27b;
+}
+
+.rechazar{
+  background:#ff5f5f;
+  color:white;
+}
