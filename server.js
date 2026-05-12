@@ -15,12 +15,12 @@ const io = new Server(server);
 const PORT = process.env.PORT || 3000;
 const ADMIN_PIN = process.env.ADMIN_PIN || "1234";
 
-const UPLOADS_DIR = process.env.UPLOADS_DIR || "uploads";
-const DATA_DIR = process.env.DATA_DIR || ".";
-const DB_PATH = process.env.DB_PATH || path.join(DATA_DIR, "mensajes.json");
+const UPLOADS_DIR = "uploads";
+const DB_PATH = "mensajes.json";
+
 
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
-fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+
 
 if (!fs.existsSync(DB_PATH)) {
   fs.writeFileSync(DB_PATH, "[]");
