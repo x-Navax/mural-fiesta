@@ -28,3 +28,31 @@ form.addEventListener("submit", async (e) => {
     respuesta.innerText = "❌ Error de conexión";
   }
 });
+
+
+const fotoInput = document.getElementById("fotoInput");
+
+const preview = document.getElementById("preview");
+
+const textoFoto = document.getElementById("textoFoto");
+
+fotoInput.addEventListener("change", () => {
+
+  const archivo = fotoInput.files[0];
+
+  if(!archivo) return;
+
+  textoFoto.innerText =
+  "✅ " + archivo.name;
+
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+
+    preview.src = e.target.result;
+
+    preview.style.display = "block";
+  };
+
+  reader.readAsDataURL(archivo);
+});

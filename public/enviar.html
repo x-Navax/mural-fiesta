@@ -17,9 +17,28 @@
       <textarea name="mensaje" placeholder="Escribí tu mensaje..." maxlength="300"></textarea>
 
       <label class="file-label">
-        Subir foto
-        <input type="file" name="foto" accept="image/*">
-      </label>
+
+          <span id="textoFoto">
+            📷 Subir foto
+          </span>
+
+          <input
+            type="file"
+            id="fotoInput"
+            name="foto"
+            accept="image/*"
+          >
+
+        </label>
+
+        <div class="preview-container">
+
+          <img
+            id="preview"
+            class="preview-img"
+          >
+
+        </div>
 
       <button type="submit">Enviar</button>
     </form>

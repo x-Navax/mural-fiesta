@@ -217,3 +217,18 @@ button:hover{
   background:#ff5f5f;
   color:white;
 }
+
+
+.preview-container{
+  margin-top:20px;
+  text-align:center;
+}
+
+.preview-img{
+  width:100%;
+  max-width:260px;
+  border-radius:22px;
+  display:none;
+  margin:auto;
+  box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
