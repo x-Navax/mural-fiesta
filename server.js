@@ -5,7 +5,6 @@ const http = require("http");
 const path = require("path");
 const fs = require("fs");
 const multer = require("multer");
-const sqlite3 = require("sqlite3").verbose();
 const { Server } = require("socket.io");
 const QRCode = require("qrcode");
 
@@ -17,27 +16,29 @@ const PORT = process.env.PORT || 3000;
 const ADMIN_PIN = process.env.ADMIN_PIN || "1234";
 
 const UPLOADS_DIR = process.env.UPLOADS_DIR || "uploads";
-const DB_PATH = process.env.DB_PATH || "./mensajes.db";
+const DATA_DIR = process.env.DATA_DIR || ".";
+const DB_PATH = process.env.DB_PATH || path.join(DATA_DIR, "mensajes.json");
 
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+
+if (!fs.existsSync(DB_PATH)) {
+  fs.writeFileSync(DB_PATH, "[]");
+}
+
+function leerMensajes() {
+  return JSON.parse(fs.readFileSync(DB_PATH, "utf8"));
+}
+
+function guardarMensajes(mensajes) {
+  fs.writeFileSync(DB_PATH, JSON.stringify(mensajes, null, 2));
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 app.use("/uploads", express.static(UPLOADS_DIR));
-
-const db = new sqlite3.Database(DB_PATH);
-
-db.run(`
-CREATE TABLE IF NOT EXISTS mensajes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  nombre TEXT,
-  mensaje TEXT,
-  foto TEXT,
-  estado TEXT DEFAULT 'pendiente'
-)
-`);
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -51,30 +52,29 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.post("/api/enviar", upload.single("foto"), (req, res) => {
-  const nombre = req.body.nombre || "Invitado";
-  const mensaje = req.body.mensaje || "";
-  const foto = req.file ? "/uploads/" + req.file.filename : "";
+  const mensajes = leerMensajes();
 
-  db.run(
-    `INSERT INTO mensajes(nombre,mensaje,foto,estado)
-     VALUES(?,?,?,'pendiente')`,
-    [nombre, mensaje, foto],
-    () => {
-      io.emit("nuevo");
-      res.json({ ok: true });
-    }
-  );
+  const nuevo = {
+    id: Date.now(),
+    nombre: req.body.nombre || "Invitado",
+    mensaje: req.body.mensaje || "",
+    foto: req.file ? "/uploads/" + req.file.filename : "",
+    estado: "pendiente"
+  };
+
+  mensajes.push(nuevo);
+  guardarMensajes(mensajes);
+
+  io.emit("nuevo");
+  res.json({ ok: true });
 });
 
 app.get("/api/aprobados", (req, res) => {
-  db.all(
-    `SELECT * FROM mensajes
-     WHERE estado='aprobado'
-     ORDER BY id DESC`,
-    (err, rows) => {
-      res.json(rows);
-    }
-  );
+  const mensajes = leerMensajes()
+    .filter(m => m.estado === "aprobado")
+    .sort((a, b) => b.id - a.id);
+
+  res.json(mensajes);
 });
 
 app.get("/api/pendientes", (req, res) => {
@@ -82,14 +82,11 @@ app.get("/api/pendientes", (req, res) => {
     return res.status(401).json([]);
   }
 
-  db.all(
-    `SELECT * FROM mensajes
-     WHERE estado='pendiente'
-     ORDER BY id DESC`,
-    (err, rows) => {
-      res.json(rows);
-    }
-  );
+  const mensajes = leerMensajes()
+    .filter(m => m.estado === "pendiente")
+    .sort((a, b) => b.id - a.id);
+
+  res.json(mensajes);
 });
 
 app.post("/api/aprobar/:id", (req, res) => {
@@ -97,15 +94,19 @@ app.post("/api/aprobar/:id", (req, res) => {
     return res.sendStatus(401);
   }
 
-  db.run(
-    `UPDATE mensajes SET estado='aprobado' WHERE id=?`,
-    [req.params.id],
-    () => {
-      io.emit("actualizar");
-      io.emit("nuevo");
-      res.json({ ok: true });
-    }
-  );
+  const mensajes = leerMensajes();
+  const mensaje = mensajes.find(m => String(m.id) === String(req.params.id));
+
+  if (mensaje) {
+    mensaje.estado = "aprobado";
+  }
+
+  guardarMensajes(mensajes);
+
+  io.emit("actualizar");
+  io.emit("nuevo");
+
+  res.json({ ok: true });
 });
 
 app.post("/api/rechazar/:id", (req, res) => {
@@ -113,14 +114,17 @@ app.post("/api/rechazar/:id", (req, res) => {
     return res.sendStatus(401);
   }
 
-  db.run(
-    `UPDATE mensajes SET estado='rechazado' WHERE id=?`,
-    [req.params.id],
-    () => {
-      io.emit("nuevo");
-      res.json({ ok: true });
-    }
-  );
+  const mensajes = leerMensajes();
+  const mensaje = mensajes.find(m => String(m.id) === String(req.params.id));
+
+  if (mensaje) {
+    mensaje.estado = "rechazado";
+  }
+
+  guardarMensajes(mensajes);
+
+  io.emit("nuevo");
+  res.json({ ok: true });
 });
 
 app.get("/qr", async (req, res) => {
