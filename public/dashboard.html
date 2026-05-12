@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear evento</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="body-admin">
+
+  <div class="admin-container">
+
+    <h1>Crear evento</h1>
+
+    <div class="login-admin">
+      <input
+        type="text"
+        id="nombreEvento"
+        placeholder="Ej: Juana 15"
+      >
+
+      <button onclick="crearEvento()">
+        Crear evento
+      </button>
+    </div>
+
+    <div id="resultadoEvento"></div>
+
+  </div>
+
+  <h1 style="margin-top:50px;">
+  Eventos creados
+</h1>
+
+<div id="eventosViejos"></div>
+
+  <script src="dashboard.js"></script>
+
+</body>
+</html>

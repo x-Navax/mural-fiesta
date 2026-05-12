@@ -2,40 +2,55 @@ const socket = io();
 
 const mural = document.getElementById("mural");
 
-async function cargarMensajes(){
+const params = new URLSearchParams(window.location.search);
+const evento = params.get("evento");
 
-  const res = await fetch("/api/aprobados");
+if (!evento) {
+  mural.innerHTML = "<p>❌ Falta el evento en el link</p>";
+}
+
+async function cargarMensajes() {
+  if (!evento) return;
+
+  const res = await fetch(
+    "/api/aprobados?evento=" + encodeURIComponent(evento)
+  );
 
   const mensajes = await res.json();
 
   mural.innerHTML = "";
 
   mensajes.forEach(msg => {
-
     mural.innerHTML += `
-      <div class="post">
+      <div class="slide-card">
+        ${msg.foto ? `<img src="${msg.foto}">` : ""}
 
-        ${
-          msg.foto
-          ? `<img src="${msg.foto}">`
-          : ""
-        }
-
-        ${
-          msg.mensaje
-          ? `<p class="mensaje">"${msg.mensaje}"</p>`
-          : ""
-        }
+        ${msg.mensaje ? `<p class="mensaje-slide">"${msg.mensaje}"</p>` : ""}
 
         <h3>${msg.nombre}</h3>
-
       </div>
     `;
   });
+
+  if (mensajes.length >= 6) {
+    duplicarSlides();
+    mural.classList.add("animado");
+  } else {
+    mural.classList.remove("animado");
+  }
 }
 
-socket.on("actualizar", cargarMensajes);
+function duplicarSlides() {
+  const cards = [...mural.children];
 
-cargarMensajes();
+  cards.forEach(card => {
+    const copia = card.cloneNode(true);
+    mural.appendChild(copia);
+  });
+}
 
-setInterval(cargarMensajes,5000);
+if (evento) {
+  socket.on("actualizar-" + evento, cargarMensajes);
+  cargarMensajes();
+  setInterval(cargarMensajes, 5000);
+}
