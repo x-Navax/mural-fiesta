@@ -18,11 +18,15 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json();
 
     if (data.ok) {
-      respuesta.innerText = "✅ Mensaje enviado";
-      form.reset();
-    } else {
-      respuesta.innerText = "❌ Error";
-    }
+        respuesta.innerText = "✅ Mensaje enviado";
+        form.reset();
+
+        preview.src = "";
+        preview.style.display = "none";
+        textoFoto.innerText = "📷 Subir foto";
+      } else {
+        respuesta.innerText = "❌ Error";
+      }
 
   } catch (error) {
     respuesta.innerText = "❌ Error de conexión";
