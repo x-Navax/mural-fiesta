@@ -91,10 +91,10 @@ button:hover{
 
 .body-pantalla{
   min-height:100vh;
-  background:
-  radial-gradient(circle at top left,#4d003e,#070009 70%);
-  color:white;
+  background:#00ff00;
+  color:#111;
   padding:30px;
+  overflow:hidden;
 }
 
 .header{
@@ -279,11 +279,11 @@ button:hover{
 }
 
 .slide-card{
-   width:320px;
+  width:320px;
   min-width:320px;
   min-height:420px;
-  background:rgba(255,255,255,.12);
-  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.95);
+  border:2px solid rgba(255,255,255,.8);
   border-radius:28px;
   padding:18px;
   backdrop-filter:blur(15px);
@@ -309,11 +309,13 @@ button:hover{
   display:flex;
   align-items:center;
   justify-content:center;
+  color:#111;
+  font-weight:600;
 }
 
 .slide-card h3{
   text-align:center;
-  color:#ffd36a;
+  color:#ff3ea5;
   font-size:22px;
   margin-top:10px;
 }
@@ -325,4 +327,9 @@ button:hover{
   to{
     transform:translateX(-50%);
   }
+}
+
+.header{
+  color:white;
+  text-shadow:0 5px 20px rgba(0,0,0,.4);
 }
