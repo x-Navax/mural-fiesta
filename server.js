@@ -229,6 +229,48 @@ app.delete("/api/eventos/:evento", (req, res) => {
   res.json({ ok: true });
 });
 
+app.get("/api/aprobados-admin", (req, res) => {
+  const evento = limpiarEvento(req.query.evento);
+
+  if (req.query.pin !== ADMIN_PIN) {
+    return res.status(401).json([]);
+  }
+
+  if (!evento) {
+    return res.status(400).json([]);
+  }
+
+  const mensajes = leerMensajes()
+    .filter(m => m.evento === evento && m.estado === "aprobado")
+    .sort((a, b) => b.id - a.id);
+
+  res.json(mensajes);
+});
+
+app.post("/api/eliminar-aprobado/:id", (req, res) => {
+  const evento = limpiarEvento(req.body.evento);
+
+  if (req.body.pin !== ADMIN_PIN) {
+    return res.sendStatus(401);
+  }
+
+  let mensajes = leerMensajes();
+
+  mensajes = mensajes.filter(m => {
+    return !(
+      String(m.id) === String(req.params.id) &&
+      m.evento === evento &&
+      m.estado === "aprobado"
+    );
+  });
+
+  guardarMensajes(mensajes);
+
+  io.emit("actualizar-" + evento);
+  io.emit("nuevo-" + evento);
+
+  res.json({ ok: true });
+});
 
 app.get("/qr", async (req, res) => {
   const evento = limpiarEvento(req.query.evento);
