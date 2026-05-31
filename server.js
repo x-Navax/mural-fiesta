@@ -315,3 +315,30 @@ app.get("/qr", async (req, res) => {
 server.listen(PORT, () => {
   console.log("Servidor iniciado en puerto " + PORT);
 });
+
+app.post("/api/limpiar-mural", (req, res) => {
+
+  const evento = limpiarEvento(req.body.evento);
+
+  if (req.body.pin !== ADMIN_PIN) {
+    return res.sendStatus(401);
+  }
+
+  let mensajes = leerMensajes();
+
+  mensajes = mensajes.filter(m => {
+    return !(
+      m.evento === evento &&
+      m.estado === "aprobado"
+    );
+  });
+
+  guardarMensajes(mensajes);
+
+  io.emit("actualizar-" + evento);
+
+  res.json({
+    ok:true
+  });
+
+});

@@ -187,3 +187,28 @@ setInterval(() => {
   cargarPendientes();
   cargarAprobados();
 }, 5000);
+
+async function limpiarMural(){
+
+  const confirmar = confirm(
+    "¿Eliminar TODOS los mensajes aprobados del mural?"
+  );
+
+  if(!confirmar) return;
+
+  await fetch(
+    "/api/limpiar-mural",
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        pin:obtenerPin(),
+        evento:evento
+      })
+    }
+  );
+
+  cargarAprobados();
+}
