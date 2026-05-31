@@ -267,7 +267,7 @@ button:hover{
 }
 
 .mural-slider.animado{
-  animation:moverSlides 45s linear infinite;
+  animation:moverSlides linear infinite;
 }.mural-slider{
   display:flex;
   gap:22px;

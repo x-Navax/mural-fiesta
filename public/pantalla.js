@@ -18,6 +18,10 @@ async function cargarMensajes() {
 
   const mensajes = await res.json();
 
+  const segundos = Math.max(30, mensajes.length * 8);
+
+mural.style.animationDuration = `${segundos}s`;
+
   mural.innerHTML = "";
 
   mensajes.forEach(msg => {
