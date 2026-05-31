@@ -101,8 +101,9 @@ app.get("/api/aprobados", (req, res) => {
   }
 
   const mensajes = leerMensajes()
-    .filter(m => m.evento === evento && m.estado === "aprobado")
-    .sort((a, b) => b.id - a.id);
+  .filter(m => m.evento === evento && m.estado === "aprobado")
+  .sort((a, b) => b.id - a.id)
+  .slice(0, 12);
 
   res.json(mensajes);
 });
